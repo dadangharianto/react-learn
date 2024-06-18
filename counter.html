@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Belajar React</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+
+      function Header() {
+        return <h1>Simple Counter ⏲</h1>;
+      }
+
+      function HomePage() {
+        const [likes, setLikes] = React.useState(0);
+        const [outOfLimit, setOutOfLimit] = React.useState(false);
+
+        function handleClick(action) {
+          if (action === "+" && likes < 10) {
+            const newLikes = likes + 1;
+            setLikes(newLikes);
+            if (newLikes >= 10) setOutOfLimit(true);
+          } else if (action === "-" && likes > 0) {
+            const newLikes = likes - 1;
+            setLikes(newLikes);
+            console.log(newLikes);
+            if (newLikes <= 0) setOutOfLimit(true);
+          } else if (action === "Reset") {
+            setLikes(0);
+            setOutOfLimit(false);
+          }
+        }
+
+        function Button({ name, disabled }) {
+          return (
+            <button onClick={() => handleClick(name)} disabled={disabled}>
+              {name}
+            </button>
+          );
+        }
+
+        return (
+          <>
+            <Header />
+            <Button name="-" disabled={outOfLimit} />
+            <span> {outOfLimit ? "Done!" : likes} </span>
+            <Button name="+" disabled={outOfLimit} />
+            <br></br>
+            <br></br>
+            <Button name="Reset" />
+          </>
+        );
+      }
+
+      root.render(<HomePage />);
+    </script>
+  </body>
+</html>
